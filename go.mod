@@ -1,3 +1,3 @@
-module hello
+module groupie-tracker
 
-go 1.22.6
+go 1.23.0
