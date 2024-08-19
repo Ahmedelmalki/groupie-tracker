@@ -1,3 +1,5 @@
 Define the Artist struct to map the API response.
 Fetch data from the API and use it to populate your HTML template.
 Serve the dynamic content using the Go HTTP server.
+
+make a page for displying the data of an artists
