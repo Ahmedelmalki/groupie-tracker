@@ -5,7 +5,10 @@ import (
 )
 
 func main() {
+	fs := http.FileServer(http.Dir("./static/"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	http.HandleFunc("/", handleIndex)
+	http.HandleFunc("/profile", handleIndex)
 
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8000", nil)
 }

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groupie Trackers</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+
+<body>
+    <header>
+        <h1>Groupie Trackers</h1>
+    </header>
+    <main>
+        <section id="artists">
+            <h2>Artists</h2>
+            <ul>
+                <div class="container">
+                    {{range .Artists}}
+                    <li>
+                        <div class="card">
+                            <h3>{{.Name}}</h3>
+                            <a href="/profile?id={{.Id}}">
+                                <img src="{{.Image}}" alt="{{.Name}}"></a>
+                        </div>
+                    </li>
+                    {{end}}
+                </div>
+            </ul>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Groupie Trackers</p>
+    </footer>
+</body>
+
+</html>

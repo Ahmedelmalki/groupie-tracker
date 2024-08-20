@@ -25,6 +25,11 @@ h2 {
     padding-bottom: 0.5em;
 }
 
+h3{
+    font-size: large;
+    color: #333;
+}
+
 footer {
     background-color: #4CAF50;
     color: white;
@@ -33,4 +38,23 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
+}
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 20px;
+    gap: 20px;
+    height: auto;
+    width: 100%;
+    font-size: 5px;
+    
+}
+
+.card {
+border-radius: 20px;
+background-color: rgb(185, 21, 185);
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+ 
 }
