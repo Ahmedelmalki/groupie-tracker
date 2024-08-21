@@ -8,10 +8,12 @@ import (
 func main() {
 	fs := http.FileServer(http.Dir("./static/"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
-	//handle routes
+
+	// handle routes
 	http.HandleFunc("/", handleIndex)
 	http.HandleFunc("/profile", handleProfile)
-	//start the server
+
+	// start the server
 	fmt.Println("Server is running at http://localhost:8090")
 	err := http.ListenAndServe(":8090", nil)
 	if err != nil {
