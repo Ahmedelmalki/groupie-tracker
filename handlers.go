@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
+	"regexp"
 	"text/template"
 )
 
@@ -41,26 +43,36 @@ func handleProfile(w http.ResponseWriter, r *http.Request) {
 	}
 	// Get the artist ID from the query parameters
 	idStr := r.URL.Query().Get("id")
+	patren := `\d+$`
+	re := regexp.MustCompile(patren)
+	if !re.MatchString(idStr) {
+		babyError(w, http.StatusNotFound)
+		return
+	}
 	if idStr == "" {
 		babyError(w, http.StatusMethodNotAllowed)
 		return
 	}
+	fmt.Println(idStr)
 	var artist Artist
 	err := fetchData("https://groupietrackers.herokuapp.com/api/artists/"+idStr, &artist)
 	if err != nil {
-		babyError(w, http.StatusMethodNotAllowed)
+		babyError(w, http.StatusInternalServerError)
 		return
 	}
-
+	if artist.Id == 0 {
+		http.Error(w, "This Goupe DOES NOT EXIST", 404)
+		return
+	}
 	tmpl, err := template.ParseFiles("static/profile.html")
 	if err != nil {
-		babyError(w, http.StatusMethodNotAllowed)
+		babyError(w, http.StatusInternalServerError)
 		return
 	}
 
 	err = tmpl.ExecuteTemplate(w, "profile.html", artist)
 	if err != nil {
-		babyError(w, http.StatusMethodNotAllowed)
+		babyError(w, http.StatusNotFound)
 		return
 	}
 }
@@ -73,11 +85,11 @@ func babyError(w http.ResponseWriter, statusCode int) {
 	}
 
 	data := struct {
-		StatusCode int
 		Message    string
+		StatusCode int
 	}{
-		StatusCode: statusCode,
 		Message:    http.StatusText(statusCode),
+		StatusCode: statusCode,
 	}
 
 	w.WriteHeader(statusCode)
