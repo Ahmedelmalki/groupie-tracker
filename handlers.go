@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"regexp"
 	"text/template"
@@ -101,4 +102,5 @@ func errors(w http.ResponseWriter, statusCode int) {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
+	fmt.Println(data.Message)
 }
