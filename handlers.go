@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"regexp"
 	"text/template"
@@ -12,8 +11,13 @@ type ArtistsResponse struct {
 }
 
 func handleIndex(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "GET" {
-		babyError(w, http.StatusMethodNotAllowed)
+	if r.Method != http.MethodGet {
+		errors(w, http.StatusMethodNotAllowed)
+		return
+	}
+
+	if r.URL.Path != "/" {
+		http.Error(w , http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		return
 	}
 	var artists []Artist
@@ -21,7 +25,7 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 
 	tmpl, err := template.ParseFiles("static/index.html")
 	if err != nil {
-		babyError(w, http.StatusMethodNotAllowed)
+		errors(w, http.StatusMethodNotAllowed)
 		return
 	}
 
@@ -31,14 +35,14 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 		Artists: artists,
 	})
 	if err != nil {
-		babyError(w, http.StatusMethodNotAllowed)
+		errors(w, http.StatusMethodNotAllowed)
 		return
 	}
 }
 
 func handleProfile(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
-		babyError(w, http.StatusMethodNotAllowed)
+		errors(w, http.StatusMethodNotAllowed)
 		return
 	}
 	// Get the artist ID from the query parameters
@@ -46,18 +50,17 @@ func handleProfile(w http.ResponseWriter, r *http.Request) {
 	patren := `\d+$`
 	re := regexp.MustCompile(patren)
 	if !re.MatchString(idStr) {
-		babyError(w, http.StatusNotFound)
+		errors(w, http.StatusNotFound)
 		return
 	}
 	if idStr == "" {
-		babyError(w, http.StatusMethodNotAllowed)
+		errors(w, http.StatusMethodNotAllowed)
 		return
 	}
-	fmt.Println(idStr)
 	var artist Artist
 	err := fetchData("https://groupietrackers.herokuapp.com/api/artists/"+idStr, &artist)
 	if err != nil {
-		babyError(w, http.StatusInternalServerError)
+		errors(w, http.StatusInternalServerError)
 		return
 	}
 	if artist.Id == 0 {
@@ -66,18 +69,18 @@ func handleProfile(w http.ResponseWriter, r *http.Request) {
 	}
 	tmpl, err := template.ParseFiles("static/profile.html")
 	if err != nil {
-		babyError(w, http.StatusInternalServerError)
+		errors(w, http.StatusInternalServerError)
 		return
 	}
 
 	err = tmpl.ExecuteTemplate(w, "profile.html", artist)
 	if err != nil {
-		babyError(w, http.StatusNotFound)
+		errors(w, http.StatusNotFound)
 		return
 	}
 }
 
-func babyError(w http.ResponseWriter, statusCode int) {
+func errors(w http.ResponseWriter, statusCode int) {
 	tmpl, err := template.ParseFiles("static/error.html")
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
