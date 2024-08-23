@@ -1,34 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{.Name}} - Artist Profile</title>
-    <link rel="stylesheet" href="static/style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="static/style.css" />
+  </head>
+  <body>
     <header>
-        <h1>{{.Name}}</h1>
-        <a href="/">Back to Home</a>
+      <h1>{{.Name}}</h1>
+      <a href="/">Back to Home</a>
     </header>
     <main>
-        <section class="artist-profile">
-            <div class="profile-card">
-                <img src="{{.Image}}" alt="{{.Name}}" class="profile-image">
-                <h2>{{.Name}}</h2>
-                <h3>Members:</h3>
-                <ul>
-                    {{range .Members}}
-                    <li>{{.}}</li>
-                    {{end}}
-                </ul>
-                <h3>Other Details:</h3>
-                <p><strong>ID:</strong> {{.Id}}</p>
-            </div>
-        </section>
+      <section class="artist-profile">
+        <div class="profile-card">
+          <img src="{{.Image}}" alt="{{.Name}}" class="profile-image" />
+          <h2>{{.Name}}</h2>
+          <h3>Members:</h3>
+          <ul>
+            {{range .Members}}
+            <li>{{.}}</li>
+            {{end}}
+          </ul>
+          <h3>Relations:</h3>
+          <ul>
+            {{range $key, $value := .Relations.Relation}}
+            <li>
+              <strong>{{ $key }}:</strong>
+              <ul>
+                {{range $value}}
+                <li>{{.}}</li>
+                {{end}}
+              </ul>
+            </li>
+            {{end}}
+          </ul>
+          <h3>Locations:</h3>
+          <ul>
+            {{range .Locations.Locations}}
+            <li>{{.}}</li>
+            {{end}}
+          </ul>
+          <h3>Dates:</h3>
+          <ul>
+            {{range .Dates.Dates}}
+            <li>{{.}}</li>
+            {{end}}
+          </ul>
+          <p><strong>ID:</strong> {{.Id}}</p>
+        </div>
+      </section>
     </main>
     <footer>
-        <p>&copy; 2024 Groupie Trackers</p>
+      <p>&copy; 2024 Groupie Trackers</p>
     </footer>
-</body>
+  </body>
 </html>

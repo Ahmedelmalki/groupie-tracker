@@ -12,13 +12,13 @@ type ArtistsResponse struct {
 }
 
 func handleIndex(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		errors(w, http.StatusMethodNotAllowed)
+	if r.Method != "GET" {
+		http.Error(w, "", http.StatusMethodNotAllowed)
 		return
 	}
 
 	if r.URL.Path != "/" {
-		http.Error(w , http.StatusText(http.StatusNotFound), http.StatusNotFound)
+		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		return
 	}
 	var artists []Artist
@@ -26,17 +26,13 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 
 	tmpl, err := template.ParseFiles("static/index.html")
 	if err != nil {
-		errors(w, http.StatusMethodNotAllowed)
+		http.Error(w, "", http.StatusInternalServerError)
 		return
 	}
 
-	err = tmpl.ExecuteTemplate(w, "index.html", struct {
-		Artists []Artist
-	}{
-		Artists: artists,
-	})
+	err = tmpl.ExecuteTemplate(w, "index.html", artists)
 	if err != nil {
-		errors(w, http.StatusMethodNotAllowed)
+		http.Error(w, "", http.StatusInternalServerError)
 		return
 	}
 }
@@ -61,22 +57,41 @@ func handleProfile(w http.ResponseWriter, r *http.Request) {
 	var artist Artist
 	err := fetchData("https://groupietrackers.herokuapp.com/api/artists/"+idStr, &artist)
 	if err != nil {
-		errors(w, http.StatusInternalServerError)
+		fmt.Println(1)
+		http.Error(w, "", http.StatusInternalServerError)
 		return
 	}
-	if artist.Id == 0 {
-		http.Error(w, "This Goupe DOES NOT EXIST", 404)
+	err = fetchData("https://groupietrackers.herokuapp.com/api/locations/"+idStr, &artist.Locations)
+	if err != nil {
+		fmt.Println(2)
+		http.Error(w, "", http.StatusInternalServerError)
+		return
+	}
+	err = fetchData("https://groupietrackers.herokuapp.com/api/dates/"+idStr, &artist.Dates)
+	if err != nil {
+		fmt.Println(3)
+		http.Error(w, "", http.StatusInternalServerError)
+		return
+	}
+	err = fetchData("https://groupietrackers.herokuapp.com/api/relation/"+idStr, &artist.Relations)
+	if err != nil {
+		fmt.Println(4)
+		http.Error(w, "", http.StatusInternalServerError)
+		return
+	}
+	if artist.Name == "" {
+		errors(w, http.StatusNotFound)
 		return
 	}
 	tmpl, err := template.ParseFiles("static/profile.html")
 	if err != nil {
-		errors(w, http.StatusInternalServerError)
+		http.Error(w, "", http.StatusInternalServerError)
 		return
 	}
 
 	err = tmpl.ExecuteTemplate(w, "profile.html", artist)
 	if err != nil {
-		errors(w, http.StatusNotFound)
+		http.Error(w, "", http.StatusNotFound)
 		return
 	}
 }

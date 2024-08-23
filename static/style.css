@@ -4,12 +4,13 @@ body {
   padding: 0;
   background-color: #333;
   overflow-x: hidden;
+  max-height: 100vh;
 }
 
 header {
   background-color: #f3f3f3;
   color: rgb(0, 0, 0);
-  padding: 1em;
+  padding: 16px;
   text-align: center;
   position: fixed;
   z-index: 20;
@@ -17,11 +18,11 @@ header {
 }
 
 main {
-  padding: 1em;
+  padding: 16px;
 }
 
 section {
-  margin-bottom: 2em;
+  margin-bottom: 32px;
 }
 
 h3 {
@@ -64,4 +65,8 @@ footer {
 .card:hover {
   transform: scale(1.09);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.error-container {
+  color: white;
 }
