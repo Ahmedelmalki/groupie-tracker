@@ -39,7 +39,7 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 
 func handleProfile(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
-		errors(w, http.StatusMethodNotAllowed)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed )
 		return
 	}
 	// Get the artist ID from the query parameters
@@ -47,11 +47,11 @@ func handleProfile(w http.ResponseWriter, r *http.Request) {
 	patren := `\d+$`
 	re := regexp.MustCompile(patren)
 	if !re.MatchString(idStr) {
-		errors(w, http.StatusNotFound)
+		http.Error(w, "page not found", 404)
 		return
 	}
 	if idStr == "" {
-		errors(w, http.StatusMethodNotAllowed)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed )
 		return
 	}
 	var artist Artist
@@ -80,7 +80,7 @@ func handleProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if artist.Name == "" {
-		errors(w, http.StatusNotFound)
+
 		return
 	}
 	tmpl, err := template.ParseFiles("static/profile.html")
@@ -96,26 +96,4 @@ func handleProfile(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func errors(w http.ResponseWriter, statusCode int) {
-	tmpl, err := template.ParseFiles("static/error.html")
-	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
 
-	data := struct {
-		Message    string
-		StatusCode int
-	}{
-		Message:    http.StatusText(statusCode),
-		StatusCode: statusCode,
-	}
-
-	w.WriteHeader(statusCode)
-	err = tmpl.ExecuteTemplate(w, "error.html", data)
-	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
-	fmt.Println(data.Message)
-}
