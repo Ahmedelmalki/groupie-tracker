@@ -1,10 +1,22 @@
-body {
-  font-family: Arial, sans-serif;
+* {
   margin: 0;
   padding: 0;
-  background-color: #333;
+}
+
+body {
+  width: 100%;
+  font-family: Arial, sans-serif;
+  background-color: rgb(194, 194, 194);
   overflow-x: hidden;
-  max-height: 100vh;
+}
+
+.bhome {
+  list-style: none;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: gray;
+  color: #f3f3f3;
 }
 
 header {
@@ -15,14 +27,15 @@ header {
   position: fixed;
   z-index: 20;
   width: 100%;
-}
-
-main {
-  padding: 16px;
+  box-shadow: 10px 2px 5px black;
 }
 
 section {
   margin-bottom: 32px;
+}
+
+h1 {
+  margin: 0px;
 }
 
 h3 {
@@ -41,12 +54,12 @@ footer {
 .container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  margin: 20px;
+  justify-content: space-around;
   gap: 20px;
   height: auto;
-  width: 100%;
+  width: 95%;
   font-size: 5px;
+  margin: auto;
 }
 
 .card {
@@ -56,8 +69,6 @@ footer {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   width: 300px;
   height: 400px;
-  padding: 20px;
-  margin: 20px;
   align-items: center;
   text-align: center;
 }
@@ -71,6 +82,22 @@ footer {
   color: white;
 }
 
+main {
+  width: 90%;
+  margin: auto;
+}
+
 img {
-  margin-top: 120px;
+  padding-top: 50px;
+}
+
+ul {
+  padding-top: 95px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px 40px;
+  height: auto;
+  width: 100%;
+  font-size: 5px;
 }

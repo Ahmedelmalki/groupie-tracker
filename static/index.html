@@ -3,6 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="https://icons.iconarchive.com/icons/alecive/flatwoken/512/Apps-Player-Audio-C-icon.png"
+      type="image/x-icon"
+    />
     <title>Groupie Trackers</title>
     <link rel="stylesheet" href="static/style.css" />
   </head>
@@ -12,23 +17,21 @@
       <h1>Groupie Trackers</h1>
     </header>
     <main>
-      <section id="artists">
-        <h2>Artists</h2>
-        <ul>
-          <div class="container">
-            {{range .}}
-            <li>
-              <div class="card">
-                <h3>{{.Name}}</h3>
-                <a href="/profile?id={{.Id}}">
-                  <img src="{{.Image}}" alt="{{.Name}}"
-                /></a>
-              </div>
-            </li>
-            {{end}}
+      <h2>Artists</h2>
+      <!-- <div class="container"> -->
+      <ul>
+        {{range .}}
+        <li>
+          <div class="card">
+            <h3>{{.Name}}</h3>
+            <a href="/profile?id={{.Id}}">
+              <img src="{{.Image}}" alt="{{.Name}}"
+            /></a>
           </div>
-        </ul>
-      </section>
+        </li>
+        {{end}}
+      </ul>
+      <!-- </div> -->
     </main>
     <footer>
       <p>&copy; 2024 Groupie Trackers</p>
