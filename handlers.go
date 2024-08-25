@@ -48,7 +48,7 @@ func handleProfile(w http.ResponseWriter, r *http.Request) {
 	patren := `\d+$`
 	re := regexp.MustCompile(patren)
 	if !re.MatchString(idStr) {
-		renderError(w, http.StatusBadRequest,"Dad Request")
+		renderError(w, http.StatusNotFound, "Page Not Found")
 		return
 	}
 	var artist Artist
@@ -60,7 +60,7 @@ func handleProfile(w http.ResponseWriter, r *http.Request) {
 		renderError(w, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
-	if err := fetchData("https://groupietrackers.herokuapp.com/api/dates/"+idStr, &artist.Dates);err != nil {
+	if err := fetchData("https://groupietrackers.herokuapp.com/api/dates/"+idStr, &artist.Dates); err != nil {
 		renderError(w, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
@@ -86,14 +86,19 @@ func handleProfile(w http.ResponseWriter, r *http.Request) {
 }
 
 func renderError(w http.ResponseWriter, status int, message string) {
-	fmt.Println(99)
 	w.WriteHeader(status)
-	tmpl, _ := template.ParseFiles("static/error.html")
-	tmpl.Execute(w, struct {
+	tmpl, err := template.ParseFiles("static/error.html")
+	if err != nil {
+		fmt.Fprintf(w, "Error: %v", err)
+	}
+	err = tmpl.Execute(w, struct {
 		S int
 		M string
 	}{
 		S: status,
 		M: message,
 	})
+	if err != nil {
+		fmt.Fprintf(w, "Error: %v", err)
+	}
 }

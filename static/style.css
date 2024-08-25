@@ -10,47 +10,12 @@ body {
   overflow-x: hidden;
 }
 
-.bhome {
-  list-style: none;
-  text-decoration: none;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: gray;
-  color: #f3f3f3;
-}
-
-header {
-  background-color: #f3f3f3;
-  color: rgb(0, 0, 0);
-  padding: 16px;
-  text-align: center;
-  position: fixed;
-  z-index: 20;
-  width: 100%;
-  box-shadow: 10px 2px 5px black;
-}
-
-section {
-  margin-bottom: 32px;
-}
-
-h1 {
-  margin: 0px;
-}
-
-h3 {
+.name {
+  font-family: monospace;
   font-size: large;
   color: #fffdfd;
 }
 
-footer {
-  background-color: #f3f3f3;
-  color: rgb(0, 0, 0);
-  text-align: center;
-  padding: 1em;
-  bottom: 0;
-  width: 100%;
-}
 .container {
   display: flex;
   flex-wrap: wrap;
@@ -60,6 +25,36 @@ footer {
   width: 95%;
   font-size: 5px;
   margin: auto;
+}
+
+.card:hover {
+  transform: scale(1.09);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.error-container {
+  color: white;
+  align-items: center;
+}
+
+main {
+  width: 90%;
+  margin: auto;
+}
+
+image {
+  padding-top: 50px;
+}
+
+.cards {
+  padding-top: 95px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px 40px;
+  height: auto;
+  width: 100%;
+  font-size: 5px;
 }
 
 .card {
@@ -73,31 +68,39 @@ footer {
   text-align: center;
 }
 
-.card:hover {
-  transform: scale(1.09);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+.profile-image {
+  padding-top: 70px;
 }
-
-.error-container {
-  color: white;
-}
-
-main {
-  width: 90%;
-  margin: auto;
-}
-
-img {
-  padding-top: 50px;
-}
-
-ul {
-  padding-top: 95px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px 40px;
-  height: auto;
+header {
+  background-color: #f3f3f3;
+  color: rgb(0, 0, 0);
+  padding: 16px;
+  text-align: center;
+  position: fixed;
+  z-index: 20;
   width: 100%;
-  font-size: 5px;
+  box-shadow: 10px 2px 5px black;
+}
+
+.profile-header {
+  background-color: #f3f3f3;
+  color: rgb(0, 0, 0);
+  padding: 16px;
+  text-align: center;
+  position: fixed;
+  z-index: 20;
+  width: 100%;
+  height: 90px;
+  box-shadow: 10px 2px 5px black;
+}
+.bhome {
+  margin-top: 120px;
+  list-style: none;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: gray;
+  color: #f3f3f3;
+  position: relative;
+  top: 20px;
 }

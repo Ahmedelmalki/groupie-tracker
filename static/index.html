@@ -16,23 +16,21 @@
     <header>
       <h1>Groupie Trackers</h1>
     </header>
-    <main>
+    <!-- <main> -->
       <h2>Artists</h2>
-      <!-- <div class="container"> -->
-      <ul>
+      <ul class="cards">
         {{range .}}
         <li>
           <div class="card">
-            <h3>{{.Name}}</h3>
+            <h3 class="name">{{.Name}}</h3>
             <a href="/profile?id={{.Id}}">
-              <img src="{{.Image}}" alt="{{.Name}}"
+              <img class="image" src="{{.Image}}" alt="{{.Name}}"
             /></a>
           </div>
         </li>
         {{end}}
       </ul>
-      <!-- </div> -->
-    </main>
+    <!-- </main> -->
     <footer>
       <p>&copy; 2024 Groupie Trackers</p>
     </footer>
