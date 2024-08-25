@@ -1,23 +1,20 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"regexp"
 	"text/template"
 )
 
-type ArtistsResponse struct {
-	Artists []Artist `json:"artists"`
-}
-
 func handleIndex(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
-		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		renderError(w, http.StatusMethodNotAllowed, "Method Not Allowed")
 		return
 	}
 
 	if r.URL.Path != "/" {
-		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+		renderError(w, http.StatusNotFound, "Page Not Found")
 		return
 	}
 	var artists []Artist
@@ -25,68 +22,78 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 
 	tmpl, err := template.ParseFiles("static/index.html")
 	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		renderError(w, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
 
 	err = tmpl.ExecuteTemplate(w, "index.html", artists)
 	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		renderError(w, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
 }
 
 func handleProfile(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
-		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		renderError(w, http.StatusMethodNotAllowed, "Method Not Allowed")
+
 		return
 	}
 	// Get the artist ID from the query parameters
 	idStr := r.URL.Query().Get("id")
+	if idStr == "" {
+		renderError(w, http.StatusMethodNotAllowed, "Method Not Allowed")
+		return
+	}
 	patren := `\d+$`
 	re := regexp.MustCompile(patren)
 	if !re.MatchString(idStr) {
-		http.Error(w, "page not found", http.StatusNotFound)
-		return
-	}
-	if idStr == "" {
-		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		renderError(w, http.StatusBadRequest,"Dad Request")
 		return
 	}
 	var artist Artist
-	err := fetchData("https://groupietrackers.herokuapp.com/api/artists/"+idStr, &artist)
-	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	if err := fetchData("https://groupietrackers.herokuapp.com/api/artists/"+idStr, &artist); err != nil {
+		renderError(w, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
-	err = fetchData("https://groupietrackers.herokuapp.com/api/locations/"+idStr, &artist.Locations)
-	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	if err := fetchData("https://groupietrackers.herokuapp.com/api/locations/"+idStr, &artist.Locations); err != nil {
+		renderError(w, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
-	err = fetchData("https://groupietrackers.herokuapp.com/api/dates/"+idStr, &artist.Dates)
-	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	if err := fetchData("https://groupietrackers.herokuapp.com/api/dates/"+idStr, &artist.Dates);err != nil {
+		renderError(w, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
-	err = fetchData("https://groupietrackers.herokuapp.com/api/relation/"+idStr, &artist.Relations)
-	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	if err := fetchData("https://groupietrackers.herokuapp.com/api/relation/"+idStr, &artist.Relations); err != nil {
+		renderError(w, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
 	if artist.Name == "" {
-		http.Error(w, "page not found", http.StatusNotFound)
+		renderError(w, http.StatusNotFound, "Page Not Found")
 		return
 	}
 	tmpl, err := template.ParseFiles("static/profile.html")
 	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		renderError(w, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
 
 	err = tmpl.ExecuteTemplate(w, "profile.html", artist)
 	if err != nil {
-		http.Error(w, "page not found", http.StatusNotFound)
+		renderError(w, http.StatusNotFound, "Page Not Found")
 		return
 	}
+}
+
+func renderError(w http.ResponseWriter, status int, message string) {
+	fmt.Println(99)
+	w.WriteHeader(status)
+	tmpl, _ := template.ParseFiles("static/error.html")
+	tmpl.Execute(w, struct {
+		S int
+		M string
+	}{
+		S: status,
+		M: message,
+	})
 }
