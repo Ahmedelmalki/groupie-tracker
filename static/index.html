@@ -16,21 +16,23 @@
     <header>
       <h1>Groupie Trackers</h1>
     </header>
-    <!-- <main> -->
-      <h2>Artists</h2>
-      <ul class="cards">
-        {{range .}}
-        <li>
-          <div class="card">
-            <h3 class="name">{{.Name}}</h3>
-            <a href="/profile?id={{.Id}}">
-              <img class="image" src="{{.Image}}" alt="{{.Name}}"
-            /></a>
+    <ul class="cards">
+      {{range .}}
+      <li>
+        <div class="card">
+          <h3 class="name">{{.Name}}</h3>
+          <a href="/profile?id={{.Id}}">
+            <img class="image" src="{{.Image}}" alt="{{.Name}}"
+          /></a>
+          <div class="cdate">
+            <h3>Creations Date: {{.CreationDate}}</h3>
+            <h3>First Album:</h3>
+            <h3>{{.FristAlbum}}</h3>
           </div>
-        </li>
-        {{end}}
-      </ul>
-    <!-- </main> -->
+        </div>
+      </li>
+      {{end}}
+    </ul>
     <footer>
       <p>&copy; 2024 Groupie Trackers</p>
     </footer>

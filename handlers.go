@@ -28,7 +28,7 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 
 	err = tmpl.ExecuteTemplate(w, "index.html", artists)
 	if err != nil {
-		renderError(w, http.StatusInternalServerError, "Internal Server Error")
+		renderError(w, http.StatusNotFound, "Page Not Found")
 		return
 	}
 }
@@ -42,7 +42,7 @@ func handleProfile(w http.ResponseWriter, r *http.Request) {
 	// Get the artist ID from the query parameters
 	idStr := r.URL.Query().Get("id")
 	if idStr == "" {
-		renderError(w, http.StatusMethodNotAllowed, "Method Not Allowed")
+		renderError(w, http.StatusNotFound, "Page Not Found")
 		return
 	}
 	patren := `\d+$`

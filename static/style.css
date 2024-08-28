@@ -104,3 +104,10 @@ header {
   position: relative;
   top: 20px;
 }
+
+.cdate {
+  font-size: small;
+  padding: 70px;
+  z-index: 12;
+  color: #f3f3f3;
+}

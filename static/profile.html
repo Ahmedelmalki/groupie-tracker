@@ -13,13 +13,14 @@
       <a href="/" class="bhome">Home</a>
     </header>
     <main>
-      <!-- <section class="artist-profile"> -->
         <div class="profile-card">
           <div class="profile-image">
             <img src="{{.Image}}" alt="{{.Name}}" class="profile-image" />
           </div>
           <h2>{{.Name}}</h2>
           <h3>Members:</h3>
+          <h3>Creations Date: {{.CreationDate}}</h3>
+          <h3>First Album: {{.FristAlbum}}</h3>
           <ul>
             {{range .Members}}
             <li>{{.}}</li>
@@ -51,7 +52,6 @@
             {{end}}
           </ul>
         </div>
-      <!-- </section> -->
     </main>
   </body>
 </html>
